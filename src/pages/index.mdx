@@ -6,6 +6,7 @@ layout: ../layouts/Layout.astro
 
 import appAndroid from "../assets/setup-android.png";
 import appIOS from "../assets/setup-ios.png";
+import safeIOS from "../assets/safe-ios.png";
 
 <title>{frontmatter.title}</title>
 
@@ -237,7 +238,7 @@ For example:
 
 This works, but one problem; we styled in tailwind.
 
-```tsx del={1} ins={2}
+```tsx del={1} ins={2} "[calc(env(safe-area-inset-top)+1.5rem)]"
 <div className="... pt-6 ...">
 <div className="... pt-[calc(env(safe-area-inset-top)+1.5rem)] ...">
 </div>
@@ -278,7 +279,9 @@ Revisiting the change would be
 
 Now the app is within the safe area.
 
-Now we have bundled it as a mobile app 🥳
+<img src={safeIOS.src} width={safeIOS.width} height={safeIOS.height} alt="" />
+
+Now we have successfully bundled it as a mobile app 🥳
 
 I changed the App icons and sent the build to the stores.
 
@@ -302,7 +305,7 @@ The designer provided the designs for the changes (Great guy).
 
 Ionic provides a great VScode extension that allows you to generate a your splash screen and app icon amongst other things.
 
-Capacitor also provides a CLI package to generate the splash scren and app icon (It's what the extension uses).
+Capacitor also provides a CLI package to generate the splash screen and app icon (It's what the extension uses).
 
 After you set up the splash screen files, Capacitor provides an official `@capacitor/splash-screen` plugin to control the behaviour of your Splash screen such as the duration, you can also manually open or close the splash screen from your web app (if you need to).
 
