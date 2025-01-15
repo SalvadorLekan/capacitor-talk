@@ -14,9 +14,7 @@ import safeIOS from "../assets/safe-ios.png";
 
 ## Introduction
 
-<span lang="jp" translate="no">
-  こんばんは、皆さん。私の名前は「サルバドール」です。
-</span>
+<span lang="jp" translate="no" >こんばんは、皆さん。私の名前は「サルバドール」です。</span>
 
 Good evening Everyone, I am Salvador, a frontend engineer here at Rise. I am currently on the Assetbase team doing great stuff.
 
@@ -63,6 +61,11 @@ It does that by serving the directory containing the web assets in a Webview, It
 ![How capacitor works](https://capacitorjs.jp/assets/img/blog/how-capacitor-works/zoomed.png)
 
 ### Why use capacitor?
+
+- We alraedy have a working solution as a web application and we need a mobile app.
+- We are not running resource intensive logic.
+- We want to eliminate duplication of business logic and effort
+- We save time and money too by shipping what we already have.
 
 Capacitor extends the functionalities possible on the web by providing intermediate access to native APIs through core plugins or community provided ones.
 You can write your own plugins too.
@@ -164,7 +167,7 @@ yarn cap sync ios
 
 ### Run/Build the native code
 
-To run your code you need to have Android studio (for Andorod) and Xcode (for iOS).
+To run your code you need to have Android studio (for Android) and Xcode (for iOS).
 
 ```sh title="Run Android"
 yarn cap run android
@@ -216,23 +219,25 @@ There are many ways to solve this, I went with adding more padding to the layout
 
 We first need to inform the browser (webview) of the situation. We do that by telling it that our content is going to cover the viewport.
 
-```html del={2} ins={3-6} title="index.html"
+```html del={2} ins={3-6} title="index.html" "viewport-fit=cover, "
 ...
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 ...
 ```
 
-The webview is kind enough to compute CSS environment variables for the safe area
+The webview is the kind enough to compute CSS environment variables for the safe area
 
 We would then need to update the spacing to account for the safe area.
 
 For example:
 
-```css del={2} ins={3}
+```css del={2, 4} ins={3, 5}
 .app-layout {
   padding-top: 1.5rem;
   padding-top: calc(env(safe-area-inset-top) + 1.5rem);
+  padding-bottom: 1.5rem;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem);
 }
 ```
 
@@ -332,13 +337,11 @@ With this I can now do
 import { IS_NATIVE_APP, PLATFORM } from "app-constants";
 import BottomNav from "./bottom_nav";
 
-{
-  IS_NATIVE_APP && <BottomNav links={navigationLinks} />;
-}
+{IS_NATIVE_APP && <BottomNav links={navigationLinks} />}
 
 // Or Call a plaform specific action
 
-if ((PLATFORM = "android")) {
+if (PLATFORM == "android") {
   await App.exitApp();
 }
 ```
